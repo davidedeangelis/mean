@@ -1,0 +1,27 @@
+{
+  "name": "mean_app",
+  "version": "1.0.0",
+  "description": "mean stack application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidedeangelis/mean.git"
+  },
+  "keywords": [
+    "mean"
+  ],
+  "author": "davide de angelis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidedeangelis/mean/issues"
+  },
+  "homepage": "https://github.com/davidedeangelis/mean#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "mocha": "^3.4.2"
+  }
+}
