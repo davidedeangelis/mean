@@ -9,11 +9,11 @@ var listenCallback = function() {
 }
 
 //callback function for html
-var reqResCallback = function(req, res) {
-	console.log('GET THE HOMEPAGE');
-	res.status(200);
-	res.sendFile(path.join(__dirname, 'public', 'index.html'));
-}
+//var reqResCallback = function(req, res) {
+//	console.log('GET THE HOMEPAGE');
+//	res.status(200);
+//	res.sendFile(path.join(__dirname, 'public', 'index.html'));
+//}
 
 //callback function for json
 var reqResJsonCallback = function(req, res) {
@@ -31,7 +31,9 @@ var reqResFileCallback = function(req, res) {
 
 app.set('port', 3000);
 
-app.get('/public', reqResCallback);
+app.use(express.static(path.join(__dirname, 'public')));//set context root
+
+//app.get('/public', reqResCallback);
 
 app.get('/json', reqResJsonCallback);
 
