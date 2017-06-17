@@ -1,5 +1,9 @@
 NPM
 
+npm install --save
+npm install 
+add git.ignore to avoid commit of libs.
+
 EXPRESS
 
 create 
