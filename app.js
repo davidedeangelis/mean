@@ -29,7 +29,16 @@ var reqResFileCallback = function(req, res) {
 	res.sendFile(path.join(__dirname, 'app.js'));
 }
 
+//express middleware callback positional
+var middlewareCallback = function(req, res, next) {
+	console.log(req.method, req.url);
+	next();
+}
+
 app.set('port', 3000);
+
+//log all request GET
+app.use(middlewareCallback);
 
 app.use(express.static(path.join(__dirname, 'public')));//set context root
 
