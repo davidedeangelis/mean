@@ -3,7 +3,7 @@ var express = require('express');
 //import path
 var path = require('path');
 //import the routes js
-var routes = require('./routes');
+var routes = require('./api/routes');
 
 //callback list function express server app
 var listenCallback = function() {
