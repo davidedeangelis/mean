@@ -1,25 +1,14 @@
+//import express
 var express = require('express');
-var app = express();
+//import path
 var path = require('path');
+//import the routes js
+var routes = require('./routes');
 
 //callback list function express server app
 var listenCallback = function() {
 	var port = server.address().port;
 	console.log('Express open for business localhost:' + port);
-}
-
-//callback function for html
-//var reqResCallback = function(req, res) {
-//	console.log('GET THE HOMEPAGE');
-//	res.status(200);
-//	res.sendFile(path.join(__dirname, 'public', 'index.html'));
-//}
-
-//callback function for json
-var reqResJsonCallback = function(req, res) {
-	console.log('GET THE HOMEPAGE');
-	res.status(200);
-	res.json({"jsonData" : true});
 }
 
 //callback function for file
@@ -35,16 +24,21 @@ var middlewareCallback = function(req, res, next) {
 	next();
 }
 
+
+//EXPRESS APP
+
+//create express app
+var app = express();
+//set port
 app.set('port', 3000);
 
 //log all request GET
 app.use(middlewareCallback);
 
+//set static path
 app.use(express.static(path.join(__dirname, 'public')));//set context root
-
-//app.get('/public', reqResCallback);
-
-app.get('/json', reqResJsonCallback);
+//set routes
+app.use('/api', routes);
 
 app.get('/file', reqResFileCallback);
 
