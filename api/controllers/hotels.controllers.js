@@ -7,7 +7,16 @@ var hotelsGetAll = function(req, res) {
 	res.json(hotelData);
 }
 
+var hotelsGetOne = function(req, res) {
+	var hotelId = req.params.hotelId;
+	var thisHotel = hotelData[hotelId];
+	console.log('GET THE HOTEL ID: ', hotelId);
+	res.status(200);
+	res.json(thisHotel);
+}
+
 //make it public? mha...
 module.exports = {
-		hotelsGetAll : hotelsGetAll
+		hotelsGetAll : hotelsGetAll,
+		hotelsGetOne : hotelsGetOne
 }
