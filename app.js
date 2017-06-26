@@ -4,6 +4,8 @@ var express = require('express');
 var path = require('path');
 //import the routes js
 var routes = require('./api/routes');
+//import parser
+var bodyParser = require('body-parser');
 
 //callback list function express server app
 var listenCallback = function() {
@@ -37,6 +39,9 @@ app.use(middlewareCallback);
 
 //set static path
 app.use(express.static(path.join(__dirname, 'public')));//set context root
+
+app.use(bodyParser.urlencoded({extended:false}));
+
 //set routes
 app.use('/api', routes);
 
