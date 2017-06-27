@@ -24,3 +24,11 @@ var server = app.listen(app.get('port'), listenCallback);
 console.log('continue..');
 
 postman chrome app
+
+NODEMON auto restart app
+
+npm install -g nodemon
+
+move to root of app and run
+>nodemon 
+it checks the package.json scrits.start param
