@@ -1,7 +1,11 @@
+var dbConn = require('../data/dbconnection.js');
 var hotelData = require('../data/hotel-data.json');
 
 //GET CONTROLLER
 var hotelsGetAll = function(req, res) {
+	var db = dbConn.get();
+	console.log('DB', db);
+	
 	console.log('GET THE HOTELS');
 	var offset = 0;
 	var count = 5;
