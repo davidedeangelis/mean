@@ -6,8 +6,8 @@ var path = require('path');
 var routes = require('./api/routes');
 //import parser
 var bodyParser = require('body-parser');
-//import mongodb connection
-require('./api/data/dbconnection.js').open();
+//import mongodb connection with mongoose
+require('./api/data/db.js');
 //callback list function express server app
 var listenCallback = function() {
 	var port = server.address().port;
