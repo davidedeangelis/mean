@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var dbUrl = "mongodb://mean:Passw0rd!@cluster0-shard-00-00-vzgp2.mongodb.net:27017,cluster0-shard-00-01-vzgp2.mongodb.net:27017,cluster0-shard-00-02-vzgp2.mongodb.net:27017/meanhotel?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
 
 mongoose.connect(dbUrl);
@@ -35,3 +36,6 @@ process.once('SIGUSR2', function(){
 		process.kill(process.pid, 'SIGUSR2');
 	});
 });
+
+//SCHEMA AND MODELS
+require('./hotels.model.js');
