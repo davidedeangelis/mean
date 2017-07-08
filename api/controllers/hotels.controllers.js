@@ -136,41 +136,133 @@ var hotelsGetOne = function(req, res) {
 
 };
 
+var _splitArray = function(input) {
+
+	var output;
+	if (input && input.length > 0) {
+		output = input.split(";");
+	} else {
+		output = [];
+	}
+	return output;
+};
+
 var hotelsAddOne = function(req, res) {
 	console.log("POST new hotel");
 	var Hotel = mongoose.model('Hotel');
-	var db = dbconn.get();
-	var collection = db.collection('hotels');
-	var newHotel;
 
-	if (req.body && req.body.name && req.body.stars) {
-		newHotel = req.body;
-		newHotel.stars = parseInt(req.body.stars, 10);
-		collection.insertOne(newHotel, function(err, response) {
-			console.log("Hotel added", response);
-			console.log("Hotel added", response.ops);
+	Hotel.create({
+		name : req.body.name,
+		description : req.body.description,
+		stars : parseInt(req.body.stars, 10),
+		services : _splitArray(req.body.services),
+		photos : _splitArray(req.body.photos),
+		currency : req.body.currency,
+		location : {
+			address : req.body.address,
+			coordinates : [parseFloat(req.body.lng),
+			               parseFloat(req.body.lat)]
+		}
+	}, function(err, hotel){
+		if (err) {
+			console.log("Error creating hotel");
 			res
-			.status(201)
-			.json(response.ops);
-		});
-		// console.log(newHotel);
-		// res
-		//   .status(200)
-		//   .json(newHotel);
-	} else {
-		console.log("Data missing from body");
-		res
-		.status(400)
-		.json({
-			message: "Required data missing from body"
-		});
-	}
-
+			.status(400)
+			.json(err);
+		} else {
+			console.log("Hotel created", hotel);
+			res
+			.status(201)//RESOURCE CREATED
+			.json(hotel);
+		}
+	});
 };
+
+var hotelsUpdateOne = function(req, res){
+	var hotelId = req.params.hotelId;
+	var Hotel = mongoose.model('Hotel');
+
+	console.log('GET hotelId', hotelId);
+
+	Hotel
+	.findById(hotelId)
+	.select("-reviews -rooms")
+	.exec(function(err, hotel) {
+		
+		var response = {
+				status : 200,
+				message : hotel
+		};
+		
+		if (err) {
+			console.log("Error finding hotel");
+			response.status = 500;
+			response.message = err;
+		} else if(!hotel) {
+			console.log("HotelId not found in database", hotelId);
+			response.status = 404;
+			response.message = {
+					"message" : "Hotel ID not found " + hotelId
+			};
+		}
+
+		if (response.status !== 200) {
+			res
+			.status(response.status)
+			.json(response.message);
+		} else {
+			hotel.name = req.body.name;
+			hotel.description = req.body.description;
+			hotel.stars = parseInt(req.body.stars, 10);
+			hotel.services = _splitArray(req.body.services);
+			hotel.photos = _splitArray(req.body.photos);
+			hotel.currency = req.body.currency;
+			hotel.location = {
+					address : req.body.address,
+					coordinates : [parseFloat(req.body.lng),
+					               parseFloat(req.body.lat)]
+			};
+
+			hotel.save(function(err, hotelUpdated) {
+				if (err) {
+					res
+					.status(500)
+					.json(err);
+				} else {
+					res
+					.status(204)
+					.json();
+				}
+			});
+		}
+	});
+};
+
+var hotelsDeleteOne = function(req, res) {
+	  var hotelId = req.params.hotelId;
+
+	  Hotel
+	    .findByIdAndRemove(hotelId)
+	    .exec(function(err, location) {
+	      if (err) {
+	        res
+	          .status(404)
+	          .json(err);
+	      } else {
+	        console.log("Hotel deleted, id:", hotelId);
+	        res
+	          .status(204)
+	          .json();        
+	      }
+	    });
+	};
+
 
 //make it public? mha...
 module.exports = {
 		hotelsGetAll : hotelsGetAll,
 		hotelsGetOne : hotelsGetOne,
-		hotelsAddOne : hotelsAddOne
+		hotelsAddOne : hotelsAddOne,
+		hotelsUpdateOne : hotelsUpdateOne,
+		hotelsDeleteOne : hotelsDeleteOne
 }
