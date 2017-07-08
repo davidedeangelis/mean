@@ -4,17 +4,29 @@ var router = express.Router();
 var ctrlHotels = require('../controllers/hotels.controllers.js');
 var ctrlReviews = require('../controllers/reviews.controllers.js');
 
-//define route for /json path
-router.route('/hotels').get(ctrlHotels.hotelsGetAll);
-//GET
-router.route('/hotels/:hotelId').get(ctrlHotels.hotelsGetOne);
-//POST FORM
-router.route('/hotels/new').post(ctrlHotels.hotelsAddOne);
+//Hotel routes
+router
+  .route('/hotels')
+  .get(ctrlHotels.hotelsGetAll)
+  .post(ctrlHotels.hotelsAddOne);
 
-//REVIEWS ROUTES
-//define route for /json path
-router.route('/hotels/:hotelId/reviews').get(ctrlReviews.reviewsGetAll);
-//GET
-router.route('/hotels/:hotelId/reviews/:reviewId').get(ctrlReviews.reviewsGetOne);
-//public access
+router
+  .route('/hotels/:hotelId')
+  .get(ctrlHotels.hotelsGetOne)
+  .put(ctrlHotels.hotelsUpdateOne)
+  .delete(ctrlHotels.hotelsDeleteOne);
+
+
+// Review routes
+router
+  .route('/hotels/:hotelId/reviews')
+  .get(ctrlReviews.reviewsGetAll)
+  .post(ctrlReviews.reviewsAddOne);
+
+router
+  .route('/hotels/:hotelId/reviews/:reviewId')
+  .get(ctrlReviews.reviewsGetOne)
+  .put(ctrlReviews.reviewsUpdateOne)
+  .delete(ctrlReviews.reviewsDeleteOne);
+
 module.exports = router;
